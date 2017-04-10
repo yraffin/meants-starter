@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
 
+import { AuthorizationService } from '../../../authentication/authorization.service';
 import { UsersService } from '../users.service';
 
 /**
@@ -15,7 +16,7 @@ import { UsersService } from '../users.service';
   templateUrl: './rights.component.html',
   styleUrls: ['./rights.component.scss']
 })
-export class RightsComponent implements OnInit {
+export class RightsComponent implements OnInit, OnDestroy {
 
   /** Represents the available rights @property {any} */
   rights: any;
@@ -26,8 +27,14 @@ export class RightsComponent implements OnInit {
   /** Gets or sets the route subscription @property {Subscription} */
   routeSub: Subscription;
 
+  /** Gets or sets the route data subscription @property {Subscription} */
+  routeDataSub: Subscription;
+
   /** Gets or sets the user identifier. @property {string} */
   userId: string;
+
+  /** Gets or sets the username. @property {string} */
+  username: string;
 
   /**
    * Initializes a new instance of the RightsComponent class.
@@ -37,17 +44,23 @@ export class RightsComponent implements OnInit {
    * @param {ToastrService} toastr The angular toastr service.
    * @param {TranslateService} translateService The angular translate service.
    * @param {UsersService} service The application users service.
+   * @param {AuthorizationService} authorizationService The application authorization service.
    */
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
     private translateService: TranslateService,
-    private service: UsersService
+    private service: UsersService,
+    private authorizationService: AuthorizationService
   ) { }
 
   ngOnInit() {
     this.service.allRights().subscribe(data => this.rights = data);
+
+    this.routeDataSub = this.route.data.subscribe((data: any) => {
+      this.username = data.username;
+    });
 
     this.routeSub = this.route.params.subscribe((params: Params) => {
       this.userId = params['id'];
@@ -59,6 +72,20 @@ export class RightsComponent implements OnInit {
 
       this.service.userRights(this.userId).subscribe(data => this.userRights = data);
     });
+  }
+
+  /**
+   * Occurred on component destroy.
+   * @method
+   */
+  ngOnDestroy() {
+    if (this.routeSub) {
+      this.routeSub.unsubscribe();
+    }
+
+    if (this.routeDataSub) {
+      this.routeDataSub.unsubscribe();
+    }
   }
 
   /**
@@ -93,8 +120,20 @@ export class RightsComponent implements OnInit {
   save() {
     this.service.updateRights(this.userId, this.userRights).subscribe(data => {
       this.toastr.success(this.translateService.instant('users.rights.save.success'));
+      if (this.username === this.authorizationService.authInfo.username) {
+        this.refreshUserRights();
+      }
+
       this.goBack();
     })
+  }
+
+  /**
+   * Refresh the current user rights.
+   * @method
+   */
+  refreshUserRights() {
+    this.service.userRights(this.userId).subscribe(rights => this.authorizationService.rights = rights);
   }
 
   /**
