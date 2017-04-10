@@ -1,0 +1,29 @@
+<form [formGroup]="form" novalidate (submit)="save($event)">
+  <input type="hidden" formControlName="id" />
+  <div class="form-group">
+    <label for="name">{{'admin.languages.model.name'|translate}}</label>
+    <input type="text" class="form-control" id="name" formControlName="name" />
+    <div class="field-error" *ngIf="isSubmitted && !form.controls.name.valid">
+      <div *ngIf="form.controls.name.hasError('required')">{{'admin.languages.model.name.required'|translate}}</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="culture">{{'admin.languages.model.culture'|translate}}</label>      
+    <select id="civilite" class="form-control" formControlName="culture">
+      <option *ngFor="let culture of cultures" [value]="culture.code">{{culture.name}}<option>
+    </select>
+    <div class="field-error" *ngIf="isSubmitted && !form.controls.culture.valid">
+      <div *ngIf="form.controls.culture.hasError('required')">{{'admin.languages.model.culture.required'|translate}}</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="flag">{{'admin.languages.model.flag'|translate}}</label>
+    <input type="text" class="form-control" id="flag" formControlName="flag" />
+    <div class="field-error" *ngIf="isSubmitted && !form.controls.flag.valid">
+      <div *ngIf="form.controls.flag.hasError('required')">{{'admin.languages.model.flag.required'|translate}}</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <button type="submit" class="btn btn-lg btn-primary btn-block btn-save">{{'admin.languages.model.' + action |translate}}</button >
+  </div>
+</form>

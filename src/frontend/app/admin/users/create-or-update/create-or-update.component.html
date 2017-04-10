@@ -1,0 +1,59 @@
+<form [formGroup]="form" novalidate (submit)="save($event)">
+  <input type="hidden" formControlName="id" />
+  <div class="form-group">
+    <label for="email">{{'admin.users.model.email'|translate}}</label>
+    <input type="text" class="form-control" id="email" formControlName="email"/>
+    <div class="field-error" *ngIf="isSubmitted && !form.controls.email.valid">
+      <div *ngIf="form.controls.email.hasError('required')">{{'admin.users.model.email.required'|translate}}</div>
+      <div *ngIf="form.controls.email.hasError('pattern')">{{'admin.users.model.email.pattern'|translate}}</div>
+    </div>
+  </div>
+  <div class="form-group" formGroupName="passwordGroup" *ngIf="form.controls.id.value === ''">
+    <div class="form-group">
+      <label for="password">{{'admin.users.model.password'|translate}}</label>
+      <input type="password" class="form-control" id="password" formControlName="password" />
+      <div class="field-error" *ngIf="isSubmitted && !form.controls.passwordGroup.controls.password.valid">
+        <div *ngIf="form.controls.passwordGroup.controls.password.hasError('required')">{{'admin.users.model.password.required'|translate}}</div>
+        <div *ngIf="form.controls.passwordGroup.controls.password.hasError('minlength')">{{'admin.users.model.password.minLength'|translate}}</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="password">{{'admin.users.model.passwordConfirm'|translate}}</label>
+      <input type="password" class="form-control" id="passwordConfirm" formControlName="passwordConfirm" />
+      <div class="field-error" *ngIf="isSubmitted && !form.controls.passwordGroup.controls.passwordConfirm.valid">
+        <div *ngIf="form.controls.passwordGroup.controls.passwordConfirm.hasError('required')">{{'admin.users.model.passwordConfirm.required'|translate}}</div>
+        <div *ngIf="form.controls.passwordGroup.controls.passwordConfirm.hasError('minlength')">{{'admin.users.model.passwordConfirm.minLength'|translate}}</div>
+      </div>
+    </div>
+    <div class="field-error" *ngIf="isSubmitted && !form.controls.passwordGroup.valid">
+      <div *ngIf="form.controls.passwordGroup.hasError('areEquals')">{{'admin.users.model.passwordGroup.areEquals'|translate}}</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="civilite">{{'admin.users.model.civilite'|translate}}</label>
+    <select id="civilite" class="form-control" formControlName="civility">
+      <option *ngFor="let civility of civilities; let i = index" [value]="i">{{civility | translate}}<option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="firstname">{{'admin.users.model.firstname'|translate}}</label>
+    <input type="text" class="form-control" id="firstname" formControlName="firstname" />
+    <div class="field-error" *ngIf="isSubmitted && !form.controls.firstname.valid">
+      <div *ngIf="form.controls.firstname.hasError('required')">{{'admin.users.model.firstname.required'|translate}}</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="lastname">{{'admin.users.model.lastname'|translate}}</label>
+    <input type="text" class="form-control" id="lastname" formControlName="lastname" />
+    <div class="field-error" *ngIf="isSubmitted && !form.controls.lastname.valid">
+      <div *ngIf="form.controls.lastname.hasError('required')">{{'admin.users.model.lastname.required'|translate}}</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <input type="checkbox" id="isSystem" formControlName="isSystem" />&emsp;
+    <label for="isSystem">{{'admin.users.model.isSystem'|translate}}</label>
+  </div>
+  <div class="form-group">
+    <button type="submit" class="btn btn-lg btn-primary btn-block btn-save">{{'admin.users.model.' + action |translate}}</button >
+  </div>
+</form>

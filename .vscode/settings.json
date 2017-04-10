@@ -1,0 +1,15 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+  "editor.tabSize": 2,
+  "editor.detectIndentation": false,
+  "angulardoc.repoId": "e3c755d2-e512-46f0-a36c-e4288730f118",
+  "angulardoc.directoryFilter": [
+    "!typings",
+    "!node_modules",
+    "!.vscode"
+  ],
+  "angulardoc.fileFilter": [
+    "**/!(*.*spec).ts"
+  ],
+  "angulardoc.lastSync": 0
+}

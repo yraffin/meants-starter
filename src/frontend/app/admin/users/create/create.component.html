@@ -1,0 +1,6 @@
+<div class="animated fadeIn">
+  <h3 [innerHTML]="'admin.users.new.title'|translate"></h3>
+  <div class='clearfix'></div>
+  <br />
+  <app-create-or-update [user]="user" (userSubmitted)="onUserSubmitted($event)"></app-create-or-update>
+</div>

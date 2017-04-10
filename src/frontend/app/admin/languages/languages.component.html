@@ -1,0 +1,40 @@
+<div class="animated fadeIn">
+  <h3 [innerHTML]="'admin.languages.title'|translate"></h3>
+  <form [formGroup]="filterForm" class="form-inline row">
+    <div class="form-group no-padding col-md-12">
+      <a [routerLink]="['new']" *appHasRight="'R_API_LANGUAGE_C'"><i class="fa fa-user-plus"></i>&emsp;{{'admin.languages.new'|translate}}</a>
+    </div>
+    <div class='clearfix col-md-6 col-sm-12'></div>
+    <br />
+    <div class="col-md-12">
+    <table class="table table-striped table-bordered table-sm" *ngIf="data">
+      <thead>
+        <tr>
+          <th (click)="orderListBy('name')"><i class="fa fa-fw fa-sort{{getSortDirection('name') ? '-' + getSortDirection('name') : ''}}"></i><span [innerHTML]="'admin.languages.header.name'|translate"></span></th>
+          <th (click)="orderListBy('culture')"><i class="fa fa-fw fa-sort{{getSortDirection('culture') ? '-' + getSortDirection('culture') : ''}}"></i><span [innerHTML]="'admin.languages.header.culture'|translate"></span></th>
+          <th [innerHTML]="'admin.languages.header.flag'|translate"></th>
+          <th [innerHTML]="'admin.languages.header.actions'|translate"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let language of data">
+          <td>{{language.name}}</td>
+          <td>{{language.culture}}</td>
+          <td>{{language.flag}}</td>
+          <td>
+             <span *appHasRight="'R_API_LANGUAGE_C'"><a [routerLink]="[language.id, 'update']"><i class="fa fa-pencil"></i></a>&emsp;</span>
+             <span *appHasRight="'R_API_LANGUAGE_RESOURCE_R'"><a [routerLink]="[language.id, 'resources']"><i class="fa fa-language"></i></a>&emsp;</span>
+             <span *appHasRight="'R_API_LANGUAGE_D'"><a href="#" (click)="deleteLanguage($event, language.id)"><i class="fa fa-trash-o"></i></a></span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class='clearfix'></div>
+    <app-pagination [current]="currentPage" [limit]="limit" [count]="count" (pageChanged)="onPageChanged($event)"></app-pagination>
+    </div>
+    <div class='clearfix'></div>
+    <input type="hidden" formControlName="sort" />
+    <input type="hidden" formControlName="page" />
+    <input type="hidden" formControlName="limit" />
+  </form>
+</div>

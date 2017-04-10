@@ -1,0 +1,53 @@
+<div class="animated fadeIn">
+  <h3 [innerHTML]="'admin.users.title'|translate"></h3>
+  <form [formGroup]="filterForm" class="form-inline row">
+        <div class="form-group col-md-6 col-sm-12">
+          <input type="text" class="form-control searching" formControlName="search" placeholder="{{'admin.users.search.placeholder'|translate}}"
+          />
+        </div>
+    <div class='clearfix col-md-6 col-sm-12'></div>
+    <br />
+    <br/>
+    <div class="form-group no-padding col-md-12">
+      <a [routerLink]="['new']" *appHasRight="'R_API_USER_C'"><i class="fa fa-user-plus"></i>&emsp;{{'admin.users.new'|translate}}</a>
+    </div>
+    <div class='clearfix col-md-6 col-sm-12'></div>
+    <br/>
+    <div class="col-md-12">
+      <table class="table table-striped table-bordered table-sm" *ngIf="data">
+        <thead>
+          <tr>
+            <th class="sortable" (click)="orderListBy('email')"><i class="fa fa-fw fa-sort{{getSortDirection('email') ? '-' + getSortDirection('email') : ''}}"></i><span [innerHTML]="'admin.users.header.email'|translate"></span></th>
+            <th [innerHTML]="'admin.users.header.civility'|translate"></th>
+            <th class="sortable" (click)="orderListBy('firstname')"><i class="fa fa-fw fa-sort{{getSortDirection('firstname') ? '-' + getSortDirection('firstname') : ''}}"></i>
+              <span [innerHTML]="'admin.users.header.firstname'|translate"></span>
+            </th>
+            <th class="sortable" (click)="orderListBy('lastname')"><i class="fa fa-fw fa-sort{{getSortDirection('lastname') ? '-' + getSortDirection('lastname') : ''}}"></i>
+              <span [innerHTML]="'admin.users.header.lastname'|translate"></span>
+            </th>
+            <th [innerHTML]="'admin.users.header.actions'|translate"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of data">
+            <td>{{user.email}}</td>
+            <td>{{ 'admin.users.civility.' + user.civility | translate }}</td>
+            <td>{{user.firstname}}</td>
+            <td>{{user.lastname}}</td>
+            <td>
+              <span *appHasRight="'R_API_USER_U'"><a [routerLink]="[user.id, 'update']"><i class="fa fa-pencil"></i></a>&emsp;</span>
+              <span *appHasRight="'R_API_LANGUAGE_RESOURCE_R'"><a [routerLink]="[user.id, 'rights']"><i class="fa fa-user-md"></i></a>&emsp;</span>
+              <span *appHasRight="'R_API_USER_D'"><a href="#" (click)="deleteUser($event, user.id)"><i class="fa fa-trash-o"></i></a></span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class='clearfix'></div>
+      <app-pagination [current]="currentPage" [limit]="limit" [count]="count" (pageChanged)="onPageChanged($event)"></app-pagination>
+      <div class='clearfix'></div>
+      <input type="hidden" formControlName="sort" />
+      <input type="hidden" formControlName="page" />
+      <input type="hidden" formControlName="limit" />
+    </div>
+  </form>
+</div>

@@ -1,0 +1,15 @@
+<div class="animated fadeIn">
+  <p>
+    gmaps works!
+  </p>
+  <div class="container">
+    <h1>Angular 2 + Google Maps Places Autocomplete</h1>
+    <div class="form-group">
+      <input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control"
+        #search [formControl]="searchControl">
+    </div>
+    <sebm-google-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
+      <sebm-google-map-marker [latitude]="latitude" [longitude]="longitude"></sebm-google-map-marker>
+    </sebm-google-map>
+  </div>
+</div>

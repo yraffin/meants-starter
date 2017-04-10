@@ -1,0 +1,80 @@
+<div class="animated fadeIn">
+  <h3 [innerHTML]="'admin.resources.title'|translate"></h3>
+  <form [formGroup]="filterForm" class="form-inline row">
+    <div class="form-group col-md-6 col-sm-12 no-padding">
+      <input type="text" class="form-control searching" formControlName="search" placeholder="{{'admin.resources.search.placeholder'|translate}}"
+      />
+    </div>
+    <div class='clearfix col-md-6 col-sm-12'></div>
+    <br />
+    <br />
+    <div class="form-group no-padding col-md-12">
+      <a href="#" *appHasRight="'R_API_LANGUAGE_RESOURCE_C'" data-toggle="modal" (click)="addNew($event)">
+        <i class="fa fa-user-plus"></i>&emsp;{{'admin.resources.new'|translate}}
+      </a>
+    </div>
+    <div class='clearfix col-md-6 col-sm-12'></div>
+    <br />
+    <div class="col-md-12">
+      <table class="table table-striped table-bordered table-sm" *ngIf="data">
+        <thead>
+          <tr>
+            <th class="sortable" (click)="orderListBy('key')"><i class="fa fa-fw fa-sort{{getSortDirection('key') ? '-' + getSortDirection('key') : ''}}"></i><span [innerHTML]="'admin.resources.header.key'|translate"></span></th>
+            <th class="sortable" (click)="orderListBy('value')"><i class="fa fa-fw fa-sort{{getSortDirection('value') ? '-' + getSortDirection('value') : ''}}"></i><span [innerHTML]="'admin.resources.header.value'|translate"></span></th>
+            <th [innerHTML]="'admin.resources.header.actions'|translate"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let resource of data">
+            <td>{{resource.key}}</td>
+            <td>{{resource.value}}</td>
+            <td>
+              <span *appHasRight="'R_API_LANGUAGE_RESOURCE_U'"><a href="#" (click)="editResource($event, resource)"><i class="fa fa-pencil"></i></a>&emsp;</span>
+              <span *appHasRight="'R_API_LANGUAGE_RESOURCE_D'"><a href="#" (click)="deleteResource($event, resource.id)"><i class="fa fa-trash-o"></i></a></span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class='clearfix'></div>
+      <app-pagination [current]="currentPage" [limit]="limit" [count]="count" (pageChanged)="onPageChanged($event)"></app-pagination>
+      <div class='clearfix'></div>
+    </div>
+    <input type="hidden" formControlName="sort" />
+    <input type="hidden" formControlName="page" />
+    <input type="hidden" formControlName="limit" />
+  </form>
+</div>
+
+<template #editModal let-c="close" let-d="dismiss">
+  <form [formGroup]="editForm" novalidate (submit)="saveResource($event)">
+    <div class="modal-header">
+      <h4 class="modal-title">Modal title</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" formControlName="id" />
+      <div class="form-group">
+        <label for="keyproperty">{{'admin.resources.model.key'|translate}}</label>
+        <input type="text" class="form-control" id="keyproperty" placeholder="{{'admin.resources.model.key.placeholder'|translate}}"
+          formControlName="key" />
+        <div class="field-error" *ngIf="isSubmitted && !editForm.controls.key.valid">
+          <div *ngIf="editForm.controls.key.hasError('required')">{{'admin.resources.model.key.required'|translate}}</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="valueproperty">{{'admin.resources.model.value'|translate}}</label>
+        <input type="text" class="form-control" id="valueproperty" placeholder="{{'admin.resources.model.value.placeholder'|translate}}"
+          formControlName="value" />
+        <div class="field-error" *ngIf="isSubmitted && !editForm.controls.value.valid">
+          <div *ngIf="editForm.controls.value.hasError('required')">{{'admin.resources.model.value.required'|translate}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-lg btn-primary btn-block btn-save">{{'admin.resources.model.' + action |translate}}</button >
+      <button type="button" class="btn btn-secondary" (click)="d()">Close</button>
+    </div>
+  </form>
+</template>
