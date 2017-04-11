@@ -21,6 +21,9 @@ npm install -g nodemon node-inspector rimraf npm-run-all npm-check
 ## Quick start
 - install [MongoDB](https://www.mongodb.com/download-center#community)
 - restore MongoDB dump : ./mongodb-dump-00.agz
+```bash
+mongorestore --host localhost --gzip --archive=mongodb-dump-00.agz
+```
 
 ```bash
 # clone the repository
