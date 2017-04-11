@@ -19,6 +19,9 @@ npm install -g nodemon node-inspector rimraf npm-run-all npm-check
  - Learning how to use the really cool **pleerock**'s library [routing-controllers](https://github.com/pleerock/routing-controllers) which help us creating our express server using typescript annotations.
 
 ## Quick start
+- install [MongoDB](https://www.mongodb.com/download-center#community)
+- restore MongoDB dump : ./mongodb-dump-00.agz
+
 ```bash
 # clone the repository
 # --depth 1 removes all but one .git commit history
@@ -35,3 +38,4 @@ npm start
 
 ```
 go to [http://localhost:8080](http://localhost:8080) in your browser
+use account admin/admin
